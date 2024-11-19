@@ -13,3 +13,17 @@ vim.opt.smartindent = true
 
 vim.opt.incsearch = true
 vim.opt.scrolloff = 8
+
+vim.opt.clipboard = {
+    name = 'xsel',
+    copy = {
+        ['+'] = 'xsel --clipboard --input',
+        ['*'] = 'xsel --primary --input',
+    },
+    paste = {
+        ['+'] = 'xsel --clipboard --output',
+        ['+'] = 'xsel --primary --output',
+    },
+    cache_enabled = 0,
+}
+        
