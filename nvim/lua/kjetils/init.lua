@@ -1,0 +1,5 @@
+require("kjetils.remap")
+require("kjetils.set")
+require("kjetils.config")
+require("kjetils.packer")
+print("Hello from Kjetils")
