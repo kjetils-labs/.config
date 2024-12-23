@@ -37,4 +37,7 @@ return require('packer').startup(function(use)
         }
     }
 
+    -- Adds the tmux navigator support for vim
+    use 'christoomey/vim-tmux-navigator'
+
 end)

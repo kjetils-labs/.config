@@ -144,6 +144,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/nhn/t1-kjetils/.local/share/nvim/site/pack/packer/start/vim-go",
     url = "https://github.com/fatih/vim-go"
+  },
+  ["vim-tmux-navigator"] = {
+    loaded = true,
+    path = "/home/nhn/t1-kjetils/.local/share/nvim/site/pack/packer/start/vim-tmux-navigator",
+    url = "https://github.com/christoomey/vim-tmux-navigator"
   }
 }
 
