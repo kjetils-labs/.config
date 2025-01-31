@@ -15,4 +15,5 @@ goa-1.0
 dlv/*
 evolution/*
 enchant/*
+dconf/user
 
