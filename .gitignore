@@ -1,3 +1,18 @@
-go/telemetry
+
+#Telemetry
+go/telemetry/*
+gopls/*
+
+#VSCode
+Code/*
+
+
+# Unknowns
 dconf
+GNOME-xdg-terminals.list
+xdg-terminals.list
 goa-1.0
+dlv/*
+evolution/*
+enchant/*
+
