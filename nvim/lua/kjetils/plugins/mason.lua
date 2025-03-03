@@ -15,8 +15,8 @@ return {
                 "jsonls",
                 "dockerls",
                 "bashls",
-		"jsonls",
-		"lua_ls",
+		        "jsonls",
+		        "lua_ls",
             },
         })
 

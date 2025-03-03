@@ -12,8 +12,6 @@ return {
 		local nvim_lsp = require("lspconfig")
 		local mason_lspconfig = require("mason-lspconfig")
 
-		local protocol = require("vim.lsp.protocol")
-
 		local on_attach = function(client, bufnr)
 			-- format on save
 			if client.server_capabilities.documentFormattingProvider then
@@ -61,4 +59,15 @@ return {
 			end,
 		})
 	end,
+
+    opts = {
+        servers = {
+            bashls = {
+                filetypes = {
+                    "sh",
+                    "zsh"
+                }
+            }
+        }
+    }
 }
