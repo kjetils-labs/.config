@@ -1,6 +1,5 @@
-require("kjetils")
+require("kjetils.settings")
+require("kjetils.remap")
+require("kjetils.config")
+require("kjetils.lazy")
 print("Hello from init")
-
-
-
-

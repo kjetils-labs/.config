@@ -1,6 +1,3 @@
-
-vim.g.mapleader = " "
-
 function map(mode, shortcut, command) 
 	vim.keymap.set(mode, shortcut, command, { noremap = true, silent = true })
 end
@@ -19,6 +16,3 @@ nmap("<Up>", "<NOP>")
 nmap("<Down>", "<NOP>")
 nmap("<Left>", "<NOP>")
 nmap("<Right>", "<NOP>")
--- vim.keymap.set("n", "<leader>pv", vim.cmd.ex)
-
-

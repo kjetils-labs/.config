@@ -3,5 +3,5 @@
 # ibus session bus with the below address.
 # If the IBUS_ADDRESS environment variable is set, it will
 # be used rather than this file.
-IBUS_ADDRESS=unix:path=/home/nhn/t1-kjetils/.cache/ibus/dbus-Q1JkN4Ms,guid=8f34393147f08f0a7f012b49677ba48c
-IBUS_DAEMON_PID=80045
+IBUS_ADDRESS=unix:path=/home/nhn/t1-kjetils/.cache/ibus/dbus-IEHJN5wU,guid=801d7414d4e1e1616488e4f967a06ae6
+IBUS_DAEMON_PID=1667025
