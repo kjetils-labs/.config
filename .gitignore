@@ -8,14 +8,24 @@ Code/*
 
 #NVIM
 
+#Monitor
+monitors.xml
+monitors.xml~
 # Unknowns
 dconf
+.gsd-keyboard.settings-ported
+gnome-initial-setup-done
 GNOME-xdg-terminals.list
 xdg-terminals.list
 goa-1.0
 gtk-3.0
+dconf/user
+user-dirs.dirs
+user-dirs.locale
+
+#Folders
+pulse/*
 dlv/*
 evolution/*
 enchant/*
-dconf/user
-
+ibus/*
