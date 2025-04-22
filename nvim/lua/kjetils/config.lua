@@ -1,4 +1,3 @@
-vim.g.mapleader = " "
 vim.g.go_addtags_transform = 'camelcase'
 
 vim.opt.guicursor = ""
@@ -29,23 +28,13 @@ vim.opt.clipboard = {
     cache_enabled = 0,
 }
 
--- vim.diagnostic.config({
---     underline = true,
---     virtual_text = true,
--- })
+-- Disables the inline error/warning text
+vim.diagnostic.config({
+    virutal_text = false,
+    -- underline = true,
+    -- virtual_lines = {
+    --     current_line = true,
+    -- }
+})
 
 vim.o.updatetime = 250
-vim.api.nvim_create_autocmd("CursorHold", {
-    buffer = bufnr,
-    callback = function()
-        local opts = {
-            focusable = false,
-            close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-            border = 'rounded',
-            source = 'always',
-            prefix = ' ',
-            scope = 'cursor',
-        }
-        vim.diagnostic.open_float(nil, opts)
-    end
-})

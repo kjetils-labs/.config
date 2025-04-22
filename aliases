@@ -1,2 +1,2 @@
 alias lla='ls -alF'
-alias vi='nvim'
+alias vi='/opt/nvim/bin/nvim'
