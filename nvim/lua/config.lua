@@ -15,6 +15,7 @@ vim.opt.smartindent = true
 vim.opt.incsearch = true
 vim.opt.scrolloff = 8
 
+---@diagnostic disable-next-line: missing-fields
 vim.opt.clipboard = {
     name = 'xsel',
     copy = {
@@ -31,10 +32,6 @@ vim.opt.clipboard = {
 -- Disables the inline error/warning text
 vim.diagnostic.config({
     virutal_text = false,
-    -- underline = true,
-    -- virtual_lines = {
-    --     current_line = true,
-    -- }
 })
 
 vim.o.updatetime = 250
