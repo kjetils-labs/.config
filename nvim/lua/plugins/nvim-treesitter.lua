@@ -3,10 +3,6 @@ return {
     -- use in Neovim to power faster and more accurate
     -- syntax highlighting.
     'nvim-treesitter/nvim-treesitter',
-    event = {
-        "BufReadPre",
-        "BufNewFile",
-    },
     build = ":TSUpdate",
 
     config = function()
@@ -29,7 +25,7 @@ return {
                 "gitignore",
                 "bash"
             },
-            sync_install = false,
+            auto_install = true,
             highlight = { enable = true },
             indent = { enable = true },
         })
