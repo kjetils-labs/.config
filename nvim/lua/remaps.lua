@@ -6,9 +6,9 @@ local function nmap(shortcut, command)
     map("n", shortcut, command)
 end
 
-local function imap(shortcut, command)
-    map("i", shortcut, command)
-end
+-- local function imap(shortcut, command)
+--     map("i", shortcut, command)
+-- end
 
 -- Unmap space to clear any existing functionality
 vim.keymap.set('n', '<Space>', '<Nop>', { noremap = true, silent = true })

@@ -1,5 +1,3 @@
-vim.g.go_addtags_transform = 'camelcase'
-
 vim.opt.guicursor = ""
 
 vim.opt.nu = true
@@ -35,3 +33,9 @@ vim.diagnostic.config({
 })
 
 vim.o.updatetime = 250
+
+vim.g.go_addtags_transform = 'camelcase' -- Makes the tags camelcase instead of snake case
+vim.g.go_doc_popup_window = 1            -- Makes to Godoc use a popup window instead of a new pane
+vim.g.go_info_popup_window = 1           -- Popups for info like function signatures
+vim.g.go_highlight_auto_align = 1        -- highlight auto alignment
+vim.g.go_auto_imports = 1                -- Automatically add imports as you code
