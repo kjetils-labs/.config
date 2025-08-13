@@ -5,8 +5,7 @@ set -u  # Treat unset variables as errors
 
 # === Config ===
 DOTFILE="$HOME/.zshrc"
-INSTALL_DIR="/opt"
-NVIM_DIR="${INSTALL_DIR}/nvim-linux-x86_64"
+INSTALL_DIR="/opt/nvim/"
 NVIM_TAR="nvim-linux-x86_64.tar.gz"
 NVIM_URL="https://github.com/neovim/neovim/releases/latest/download/${NVIM_TAR}"
 
@@ -15,14 +14,19 @@ echo "Installing Neovim to ${INSTALL_DIR}..."
 
 curl -LO "${NVIM_URL}"
 
-sudo tar -C "${INSTALL_DIR}" -xzf "${NVIM_TAR}"
+if [ ! -d "INSTALL_DIR" ]; then
+    echo "Creating path ${INSTALL_DIR}..."
+    sudo mkdir -p "INSTALL_DIR"
+fi
 
-echo "✅ Neovim extracted to ${NVIM_DIR}"
+sudo tar -C "${INSTALL_DIR}" -xzf "${NVIM_TAR}" --strip-components=1
+
+echo "✅ Neovim extracted to ${INSTALL_DIR}"
 
 # === Add to PATH if not already added ===
 echo "🔧 Configuring PATH in ${DOTFILE}..."
 
-NVIM_PATH_LINE="export PATH=\$PATH:${NVIM_DIR}/bin"
+NVIM_PATH_LINE="export PATH=\$PATH:${INSTALL_DIR}/bin"
 
 if ! grep -Fxq "${NVIM_PATH_LINE}" "${DOTFILE}"; then
     echo -e "\n${NVIM_PATH_LINE}" >> "${DOTFILE}"

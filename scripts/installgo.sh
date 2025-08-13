@@ -14,24 +14,18 @@ DOWNLOAD_URL="https://go.dev/dl/${GO_TARBALL}"
 
 TMP_DIR=$(mktemp -d)
 
-# Check for root privileges
-if [ "$EUID" -ne 0 ]; then
-  echo "Please run as root (e.g., using sudo)."
-  exit 1
-fi
-
 echo "Downloading ${GO_TARBALL} from ${DOWNLOAD_URL}..."
 curl -L -o "${TMP_DIR}/${GO_TARBALL}" "${DOWNLOAD_URL}"
 
 if [ -d "${INSTALL_DIR}/go" ]; then
   echo "Removing old Go installation..."
-  rm -rf "${INSTALL_DIR}/go"
+  sudo rm -rf "${INSTALL_DIR}/go"
 fi
 
 echo "Extracting Go to ${INSTALL_DIR}..."
-tar -C "${INSTALL_DIR}" -xzf "${TMP_DIR}/${GO_TARBALL}"
+sudo tar -C "${INSTALL_DIR}" -xzf "${TMP_DIR}/${GO_TARBALL}"
 
-rm -rf "${TMP_DIR}"
+sudo rm -rf "${TMP_DIR}"
 
 # Add Go to PATH in .zshrc if not already present
 if [ -f "$ZSHRC" ]; then
