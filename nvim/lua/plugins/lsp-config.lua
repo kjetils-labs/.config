@@ -118,6 +118,13 @@ return {
 					end,
 				},
 
+				{
+					"clangd",
+					condition = function()
+						return vim.fn.executable("cpp") == 1
+					end,
+				},
+
 				"prettier",
 				"stylua",
 				"eslint_d",
