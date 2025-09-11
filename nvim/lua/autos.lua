@@ -2,11 +2,15 @@ vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = true }),
     callback = function(args)
         local client = vim.lsp.get_client_by_id(args.data.client_id)
-        if not client then return end
+        if not client then
+            return
+        end
 
         -- Optional: skip some LSP clients from formatting
         local skip_formatters = { "tsserver" } -- add others if needed
-        if vim.tbl_contains(skip_formatters, client.name) then return end
+        if vim.tbl_contains(skip_formatters, client.name) then
+            return
+        end
 
         if client.server_capabilities.documentFormattingProvider then
             vim.api.nvim_create_autocmd("BufWritePre", {
@@ -17,7 +21,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
                         async = false,
                         filter = function(c)
                             -- Prefer null-ls if it's available
-                            if c.name == "null-ls" then return true end
+                            if c.name == "null-ls" then
+                                return true
+                            end
                             return not vim.tbl_contains(skip_formatters, c.name)
                         end,
                     })
@@ -39,40 +45,20 @@ vim.api.nvim_create_autocmd("VimEnter", {
     end,
 })
 
+local group = vim.api.nvim_create_augroup("DiagnosticsGroup", { clear = true })
 
--- Initialize a variable to track the state
-local autocmd_enabled = false
-
--- Function to toggle the autocmd
-function Toggle_diagnostics_autocmd()
-    if autocmd_enabled then
-        -- Clear the autocmd if it is active
-        vim.api.nvim_clear_autocmds({ group = "DiagnosticsGroup" })
-        autocmd_enabled = false
-        print("Diagnostics autocmd disabled")
-    else
-        -- Define the autocmd group
-        local group = vim.api.nvim_create_augroup("DiagnosticsGroup", { clear = true })
-
-        -- Create the autocmd to show diagnostics
-        vim.api.nvim_create_autocmd("CursorHold", {
-            group = group,
-            callback = function()
-                local opts = {
-                    focusable = false,
-                    close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-                    border = "rounded",
-                    source = "always",
-                    prefix = " ",
-                    scope = "cursor",
-                }
-                vim.diagnostic.open_float(nil, opts)
-            end,
-        })
-
-        autocmd_enabled = true
-        print("Diagnostics autocmd enabled")
-    end
-end
-
-Toggle_diagnostics_autocmd()
+-- Create the autocmd to show diagnostics
+vim.api.nvim_create_autocmd("CursorHold", {
+    group = group,
+    callback = function()
+        local opts = {
+            focusable = false,
+            close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+            border = "rounded",
+            source = "always",
+            prefix = " ",
+            scope = "cursor",
+        }
+        vim.diagnostic.open_float(nil, opts)
+    end,
+})

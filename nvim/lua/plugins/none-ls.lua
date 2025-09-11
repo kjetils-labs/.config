@@ -10,7 +10,6 @@ return {
                     -- Formatters
                     null_ls.builtins.formatting.stylua,
                     null_ls.builtins.formatting.prettier,
-                    null_ls.builtins.formatting.eslint,
 
                     -- Completion
                     null_ls.builtins.completion.spell,
@@ -25,25 +24,35 @@ return {
                         filetypes = { "sh" },
                     }),
                     null_ls.builtins.diagnostics.golangci_lint.with({
+                        args = { "--output.json.path=stdout" },
                         filetypes = { "go" },
                     }),
                     null_ls.builtins.code_actions.impl,
-                    null_ls.builtins.code_actions.iferr,
                 },
             })
         end,
     },
     {
         "jay-babu/mason-null-ls.nvim",
+        event = { "BufReadPre", "BufNewFile" },
         dependencies = {
             "williamboman/mason.nvim",
             "nvimtools/none-ls.nvim",
         },
-        opts = {
-            automatic_installation = true,
-        },
-        config = function(_, opts)
-            require("mason-null-ls").setup(opts)
+        config = function()
+            require("mason").setup()
+            require("mason-null-ls").setup({
+                ensure_installed = {
+                    "prettier",
+
+                    -- Go stuff
+                    "gomodifytags",
+                    "golangci_lint",
+
+                    "dotenv_linter",
+                    "impl",
+                },
+            })
         end,
     },
 }

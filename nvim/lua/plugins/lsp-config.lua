@@ -120,6 +120,7 @@ return {
                     "gopls",
                     "golangci-lint",
                     "gomodifytags",
+                    "goimports",
                     "iferr",
                     "impl",
                     condition = function()
