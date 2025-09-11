@@ -3,9 +3,14 @@
 fileName=".zshrc"
 
 echo "Adding zsh aliases at .config/aliases to $fileName"
-
 if ! grep -q 'source $HOME/.config/aliases' "$HOME/$fileName"; then
 	echo -e '\nsource $HOME/.config/aliases' >> $HOME/$fileName
+fi
+
+
+echo "Adding zsh lazyloader at .config/lazyloader.sh to $fileName"
+if ! grep -q 'source $HOME/.config/lazyloader.sh' "$HOME/$fileName"; then
+	echo -e '\nsource $HOME/.config/lazyloader.sh' >> $HOME/$fileName
 fi
 
 # ZSH sytax highlighting
