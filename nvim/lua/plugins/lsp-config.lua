@@ -26,7 +26,7 @@ return {
 				keymap("n", "go", vim.lsp.buf.type_definition, opts)
 				keymap("n", "gr", vim.lsp.buf.references, opts)
 				keymap("n", "gs", vim.lsp.buf.signature_help, opts)
-				keymap("n", "<F1>", vim.lsp.buf.rename, opts)
+				keymap("n", "<F4>", vim.lsp.buf.rename, opts)
 
 				if client.server_capabilities.documentFormattingProvider then
 					keymap({ "n", "x" }, "<F2>", function()
@@ -87,6 +87,20 @@ return {
 									},
 								},
 							},
+						})
+					end,
+					-- Custom angularls config
+					["angularls"] = function()
+						require("lspconfig").angularls.setup({
+							on_attach = on_attach,
+							capabilities = capabilities,
+						})
+					end,
+					-- Custom typescript config
+					["tsserver"] = function()
+						require("lspconfig").angularls.setup({
+							on_attach = on_attach,
+							capabilities = capabilities,
 						})
 					end,
 				},
@@ -150,6 +164,12 @@ return {
 				"stylua",
 				"eslint_d",
 				"dotenv-linter",
+				"typescript-language-server",
+				"angular-language-server",
+				"angularls",
+				"lua_ls",
+				"cssls",
+				"html",
 			},
 			auto_update = false,
 			-- run_on_start = true,

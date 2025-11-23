@@ -10,8 +10,9 @@ DOWNLOAD_URL="https://go.dev/dl/${GO_TARBALL}"
 # Fetch only the first line (the version string)
 echo "Fetching latest Go version..."
 LATEST_VERSION=$(curl -s https://go.dev/VERSION?m=text | head -n 1)
+echo "Latest version is $LATEST_VERSION"
 
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	GO_TARBALL="${LATEST_VERSION}.linux-amd64.tar.gz"
 
 	TMP_DIR=$(mktemp -d)
@@ -33,7 +34,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
         # Mac OSX
 	GO_TARBALL="${LATEST_VERSION}.darwin-arm64.pkg"
 else
-	echo "unknown OS
+	echo "unknown OS"
 fi
 
 
