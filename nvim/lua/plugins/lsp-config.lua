@@ -160,6 +160,14 @@ return {
 					end,
 				},
 
+				-- Docker stuff
+				{
+					"docker-language-server",
+					condition = function()
+						return vim.fn.executable("yaml") == 1 or vim.fn.executable("yml") == 1
+					end,
+				},
+
 				"prettier",
 				"stylua",
 				"eslint_d",
