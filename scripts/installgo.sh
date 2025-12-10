@@ -5,7 +5,6 @@ set -e
 INSTALL_DIR="/usr/local"
 GO_PATH_LINE='export PATH=$PATH:/usr/local/go/bin'
 ZSHRC="$HOME/.zshrc"
-DOWNLOAD_URL="https://go.dev/dl/${GO_TARBALL}"
 
 # Fetch only the first line (the version string)
 echo "Fetching latest Go version..."
@@ -15,27 +14,29 @@ echo "Latest version is $LATEST_VERSION"
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	GO_TARBALL="${LATEST_VERSION}.linux-amd64.tar.gz"
 
-	TMP_DIR=$(mktemp -d)
-
-	echo "Downloading ${GO_TARBALL} from ${DOWNLOAD_URL}..."
-	curl -L -o "${TMP_DIR}/${GO_TARBALL}" "${DOWNLOAD_URL}"
-
-	if [ -d "${INSTALL_DIR}/go" ]; then
-  		echo "Removing old Go installation..."
-  		sudo rm -rf "${INSTALL_DIR}/go"
-	fi
-
-	echo "Extracting Go to ${INSTALL_DIR}..."
-	sudo tar -C "${INSTALL_DIR}" -xzf "${TMP_DIR}/${GO_TARBALL}"
-
-	sudo rm -rf "${TMP_DIR}"
-
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-        # Mac OSX
+    # Mac OSX
 	GO_TARBALL="${LATEST_VERSION}.darwin-arm64.pkg"
 else
 	echo "unknown OS"
 fi
+
+DOWNLOAD_URL="https://go.dev/dl/${GO_TARBALL}"
+
+TMP_DIR=$(mktemp -d)
+
+echo "Downloading ${GO_TARBALL} from ${DOWNLOAD_URL}..."
+curl -L -o "${TMP_DIR}/${GO_TARBALL}" "${DOWNLOAD_URL}"
+
+if [ -d "${INSTALL_DIR}/go" ]; then
+    echo "Removing old Go installation..."
+    sudo rm -rf "${INSTALL_DIR}/go"
+fi
+
+echo "Extracting Go to ${INSTALL_DIR}..."
+sudo tar -C "${INSTALL_DIR}" -xzf "${TMP_DIR}/${GO_TARBALL}"
+
+sudo rm -rf "${TMP_DIR}"
 
 
 # Add Go to PATH in .zshrc if not already present
