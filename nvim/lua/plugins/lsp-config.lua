@@ -103,6 +103,14 @@ return {
 							capabilities = capabilities,
 						})
 					end,
+					-- Custom typescript config
+					["python-lsp-server"] = function()
+						require("lspconfig").angularls.setup({
+							on_attach = on_attach,
+							capabilities = capabilities,
+							settings = {},
+						})
+					end,
 				},
 			}
 		end,
@@ -168,6 +176,13 @@ return {
 					end,
 				},
 
+				-- Python stuff
+				{
+					"python-lsp-server",
+					condition = function()
+						return vim.fn.executable("py") == 1
+					end,
+				},
 				"prettier",
 				"stylua",
 				"eslint_d",
