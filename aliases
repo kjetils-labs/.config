@@ -1,3 +1,5 @@
+#!/bin/bash
+
 alias lla='ls -alF'
 
 if [[ -e '/opt/nvim/bin/nvim' ]]; then
@@ -7,3 +9,4 @@ elif [[ -e '/opt/homebrew/bin/nvim' ]]; then
 fi
 
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+alias k='kubectl'
