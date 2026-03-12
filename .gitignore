@@ -29,3 +29,7 @@ dlv/*
 evolution/*
 enchant/*
 ibus/*
+configstore/*
+nextjs-nodejs/*
+turborepo/*
+
