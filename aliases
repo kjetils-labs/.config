@@ -10,3 +10,5 @@ fi
 
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 alias k='kubectl'
+
+alias gs='git status'
