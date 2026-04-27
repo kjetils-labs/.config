@@ -6,11 +6,10 @@ gopls/*
 #VSCode
 Code/*
 
-#NVIM
-
 #Monitor
 monitors.xml
 monitors.xml~
+
 # Unknowns
 dconf
 .gsd-keyboard.settings-ported
@@ -22,6 +21,13 @@ gtk-3.0
 dconf/user
 user-dirs.dirs
 user-dirs.locale
+
+
+#ArgoCD configs, contains tokens and other secrets, should not be commited to git
+argocd/*
+
+#AI stuff, contains secrets and tokens, should not be commited to git
+github-copilot/*
 
 #Folders
 pulse/*
