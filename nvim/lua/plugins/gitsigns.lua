@@ -24,6 +24,14 @@ return {
 			sign_priority = 6,
 			max_file_length = 40000, -- Disable if file is longer than this (in lines)
 			-- linehl                       = true,  -- Enables :Gitsigns toggle_numhl on launch
+			signs_staged_enable = true,
+			signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
+			numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
+			linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
+			word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
+			watch_gitdir = {
+				follow_files = true,
+			},
 		})
 	end,
 }
