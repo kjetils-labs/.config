@@ -31,6 +31,13 @@ return {
 						enabled = true,
 					},
 				},
+				watchers = {
+					enabled = true,
+					interval = 1000,
+					follow_current_file = {
+						enabled = true,
+					},
+				},
 			})
 
 			local events = require("neo-tree.events")
