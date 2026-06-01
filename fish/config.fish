@@ -1,11 +1,13 @@
-source /usr/share/cachyos-fish-config/cachyos-config.fish
 
-# overwrite greeting
-# potentially disabling fastfetch
-#function fish_greeting
-#    # smth smth
-#end
+# sourcing for cachyOS
+set cachyos_config "/usr/share/cachyos-fish-config/cachyos-config.fish"
+if test -e $cachyos_config
+    source cachyos_config
+end
 
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-set -x SSH_AUTH_SOCK $XDG_RUNTIME_DIR/ssh-agent.socket
+set -x SSH_AUTH_SOCK "$XDG_RUNTIME_DIR/ssh-agent.socket"
 source ~/.config/aliases
+
+
+starship init fish | source
+
