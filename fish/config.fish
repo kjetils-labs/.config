@@ -11,3 +11,6 @@ source ~/.config/aliases
 
 starship init fish | source
 
+
+/opt/homebrew/bin/brew shellenv | source
+
