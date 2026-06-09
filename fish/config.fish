@@ -9,8 +9,8 @@ set -x SSH_AUTH_SOCK "$XDG_RUNTIME_DIR/ssh-agent.socket"
 source ~/.config/aliases
 
 
-starship init fish | source
-
+/usr/local/bin/starship init fish | source
+# starship init fish | source
 
 /opt/homebrew/bin/brew shellenv | source
 
