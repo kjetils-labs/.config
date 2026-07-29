@@ -14,3 +14,6 @@ source ~/.config/aliases
 
 /opt/homebrew/bin/brew shellenv | source
 
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
+export PATH="/usr/local/bin:$PATH"
