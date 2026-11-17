@@ -1,3 +1,6 @@
+# The following lines were added by Docker Desktop to add commands to your PATH.
+export PATH="$PATH:$HOME/.docker/bin"
+# End of Docker Desktop section.
 
 # sourcing for cachyOS
 set cachyos_config "/usr/share/cachyos-fish-config/cachyos-config.fish"
@@ -17,3 +20,4 @@ source ~/.config/aliases
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"
+export PATH="$HOME/Library/Python/3.14/bin:$PATH"
