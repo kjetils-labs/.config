@@ -7,7 +7,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end
 
 		-- Optional: skip some LSP clients from formatting
-		local skip_formatters = { "tsserver" } -- add others if needed
+		local skip_formatters = { "ts_ls", "vtsls" } -- add others if needed
 		if vim.tbl_contains(skip_formatters, client.name) then
 			return
 		end
@@ -40,25 +40,43 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		local arg = vim.fn.argv(0)
 		if arg and vim.fn.isdirectory(arg) == 1 then
 			vim.cmd("Neotree show")
-			vim.cmd("cd " .. arg)
+			vim.cmd.cd(arg)
 		end
 	end,
 })
 
 local group = vim.api.nvim_create_augroup("DiagnosticsGroup", { clear = true })
 
--- Create the autocmd to show diagnostics
-vim.api.nvim_create_autocmd("CursorHold", {
-	group = group,
-	callback = function()
-		local opts = {
-			focusable = false,
-			close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-			border = "rounded",
-			source = "always",
-			prefix = " ",
-			scope = "cursor",
-		}
-		vim.diagnostic.open_float(nil, opts)
-	end,
-})
+local function show_diagnostics_float()
+	vim.diagnostic.open_float(nil, {
+		focusable = false,
+		close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+		border = "rounded",
+		source = "always",
+		prefix = " ",
+		scope = "cursor",
+	})
+end
+
+local diagnostics_autocmd_id
+
+-- Toggles the diagnostics popup on CursorHold (mapped to <Leader>e)
+function Toggle_diagnostics_autocmd(silent)
+	if diagnostics_autocmd_id then
+		vim.api.nvim_del_autocmd(diagnostics_autocmd_id)
+		diagnostics_autocmd_id = nil
+		if not silent then
+			vim.notify("Diagnostics popup off")
+		end
+	else
+		diagnostics_autocmd_id = vim.api.nvim_create_autocmd("CursorHold", {
+			group = group,
+			callback = show_diagnostics_float,
+		})
+		if not silent then
+			vim.notify("Diagnostics popup on")
+		end
+	end
+end
+
+Toggle_diagnostics_autocmd(true)

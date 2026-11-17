@@ -5,16 +5,22 @@ return {
 	{
 		"nvim-telescope/telescope.nvim",
 		branch = "master",
-		dependencies = { "nvim-lua/plenary.nvim" },
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-telescope/telescope-ui-select.nvim",
+			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+		},
 		config = function()
-			require("telescope").setup({
-
+			local telescope = require("telescope")
+			telescope.setup({
 				extensions = {
 					["ui-select"] = {
 						require("telescope.themes").get_dropdown({}),
 					},
 				},
 			})
+			telescope.load_extension("ui-select")
+			pcall(telescope.load_extension, "fzf") -- needs `make` to have built the native library
 
 			local builtin = require("telescope.builtin")
 			vim.keymap.set("n", "<leader>p", builtin.find_files, { desc = "Telescope find files" })
@@ -22,16 +28,5 @@ return {
 			vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Telescope buffers" })
 			vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
 		end,
-	},
-	{
-		"nvim-telescope/telescope-ui-select.nvim",
-		config = function()
-			require("telescope").load_extension("ui-select")
-			require("telescope").load_extension("fzf")
-		end,
-	},
-	{
-		"nvim-telescope/telescope-fzf-native.nvim",
-		build = "make",
 	},
 }

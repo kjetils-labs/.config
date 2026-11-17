@@ -12,8 +12,10 @@ return {
 	{
 		"mason-org/mason-lspconfig.nvim",
 		lazy = false,
-		opts = function()
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+		config = function()
+			vim.lsp.config("*", {
+				capabilities = require("cmp_nvim_lsp").default_capabilities(),
+			})
 
 			local on_attach = function(client, bufnr)
 				local keymap = vim.keymap.set
@@ -37,133 +39,60 @@ return {
 				keymap("n", "<F3>", vim.lsp.buf.code_action, opts)
 			end
 
-			return {
-				auto_install = true,
-				handlers = {
-					function(server_name)
-						require("lspconfig")[server_name].setup({
-							on_attach = on_attach,
-							capabilities = capabilities,
-						})
-					end,
+			vim.api.nvim_create_autocmd("LspAttach", {
+				group = vim.api.nvim_create_augroup("user_lsp_keymaps", { clear = true }),
+				callback = function(args)
+					local client = vim.lsp.get_client_by_id(args.data.client_id)
+					if client then
+						on_attach(client, args.buf)
+					end
+				end,
+			})
 
-					-- Custom gopls config
-					["gopls"] = function()
-						require("lspconfig").gopls.setup({
-							on_attach = on_attach,
-							capabilities = capabilities,
-							settings = {
-								gopls = {
-									["build.templateExtensions"] = {
-										"gohtml",
-										"html",
-										"gotmpl",
-										"tmpl",
-									},
-									usePlaceholders = true,
-									staticcheck = true,
-									completeUnimported = true, -- autocompletion for packages not yet imported
-									analyses = {
-										unusedparams = true,
-										shadow = true,
-										fieldalignment = true, -- suggest field reordering to reduce struct size
-									},
-									codelenses = {
-										generate = true, -- enable go:generate lens
-										gc_details = true, -- show GC details
-										test = true, -- run tests via code lens
-									},
-								},
-								filetypes = {
-									"go",
-									"gomod",
-									"gowork",
-									"gotmpl",
-									"gohtmltmpl",
-									"gotexttmpl",
-								},
-							},
-						})
-					end,
-
-					-- custom go-template-lsp config
-					["go-template-lsp"] = function()
-						require("lspconfig").go_template_lsp.setup({
-							on_attach = on_attach,
-							capabilities = capabilities,
-							filetypes = { "gotmpl" },
-							root_markers = { "go.mod", ".git" },
-							mason = true,
-						})
-					end,
-
-					-- Custom lua_ls config
-					["lua_ls"] = function()
-						require("lspconfig").lua_ls.setup({
-							on_attach = on_attach,
-							capabilities = capabilities,
-							settings = {
-								Lua = {
-									diagnostics = {
-										globals = { "vim" },
-									},
-									workspace = {
-										checkThirdParty = false,
-									},
-								},
-							},
-						})
-					end,
-					-- Custom angularls config
-					["angularls"] = function()
-						require("lspconfig").angularls.setup({
-							on_attach = on_attach,
-							capabilities = capabilities,
-						})
-					end,
-					-- Custom typescript config
-					["tsserver"] = function()
-						require("lspconfig").angularls.setup({
-							on_attach = on_attach,
-							capabilities = capabilities,
-						})
-					end,
-					-- Custom typescript config
-					["python-lsp-server"] = function()
-						require("lspconfig").angularls.setup({
-							on_attach = on_attach,
-							capabilities = capabilities,
-							settings = {},
-						})
-					end,
-					-- Custom helm-ls config
-					["helm-ls"] = function()
-						require("lspconfig").helm_ls.setup({
-							on_attach = on_attach,
-							capabilities = capabilities,
-							settings = {
-								yamlls = {
-									path = "yaml-language-server",
-								},
-							},
-						})
-					end,
-					-- Custom yamlls config
-					["yamlls"] = function()
-						require("lspconfig").yamlls.setup({
-							on_attach = on_attach,
-							capabilities = capabilities,
-							settings = {
-								yamlls = {},
-							},
-							filetypes = { "yaml", "yml" },
-						})
-					end,
+			vim.lsp.config("gopls", {
+				filetypes = { "go", "gomod", "gowork", "gotmpl", "gohtmltmpl", "gotexttmpl" },
+				settings = {
+					gopls = {
+						templateExtensions = { "gohtml", "html", "gotmpl", "tmpl" },
+						usePlaceholders = true,
+						staticcheck = true,
+						completeUnimported = true, -- autocompletion for packages not yet imported
+						analyses = {
+							unusedparams = true,
+							shadow = true,
+							fieldalignment = true, -- suggest field reordering to reduce struct size
+						},
+						codelenses = {
+							generate = true, -- enable go:generate lens
+							gc_details = true, -- show GC details
+							test = true, -- run tests via code lens
+						},
+					},
 				},
-			}
-		end,
-		config = function()
-			require("mason-lspconfig").setup()
+			})
+
+			vim.lsp.config("lua_ls", {
+				settings = {
+					Lua = {
+						diagnostics = { globals = { "vim" } },
+						workspace = { checkThirdParty = false },
+					},
+				},
+			})
+
+			vim.lsp.config("helm_ls", {
+				settings = {
+					["helm-ls"] = {
+						yamlls = { path = "yaml-language-server" },
+					},
+				},
+			})
+
+			-- mason-lspconfig v2 auto-enables installed servers with vim.lsp.enable
+			-- ts_ls and vtsls overlap; keep vtsls only
+			require("mason-lspconfig").setup({
+				automatic_enable = { exclude = { "ts_ls" } },
+			})
 		end,
 	},
 
@@ -172,81 +101,76 @@ return {
 		lazy = false,
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
-			{ "folke/neodev.nvim", opts = {} },
 		},
 		config = function() end,
 	},
 
 	{
+		"folke/lazydev.nvim",
+		ft = "lua",
+		opts = {
+			library = {
+				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+			},
+		},
+	},
+
+	{
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		dependencies = {
-			"williamboman/mason.nvim",
+			"mason-org/mason.nvim",
 		},
-		opts = {
-			ensure_installed = {
+		opts = function()
+			local function has(...)
+				for _, exe in ipairs({ ... }) do
+					if vim.fn.executable(exe) == 1 then
+						return true
+					end
+				end
+				return false
+			end
 
-				-- Go stuff
-				{
-					"gopls",
-					"golangci-lint",
-					"gomodifytags",
-					"goimports",
-					"iferr",
-					"impl",
-					condition = function()
-						return vim.fn.executable("go") == 1
-					end,
-				},
+			-- mason-tool-installer only reads the first name of each entry,
+			-- so every tool gets its own entry
+			local function when(cond, tools)
+				return vim.tbl_map(function(tool)
+					return {
+						tool,
+						condition = function()
+							return cond
+						end,
+					}
+				end, tools)
+			end
 
-				-- C++ stuff
-				{
-					"clangd",
-					condition = function()
-						return vim.fn.executable("cpp") == 1
-					end,
-				},
-
-				-- Markdown stuff
-				{
-					"prettier",
-					"markdownlint",
-					"markdown-oxide",
-					condition = function()
-						return vim.fn.executable("md") == 1
-					end,
-				},
-
-				-- Docker stuff
-				{
-					"docker-language-server",
-					condition = function()
-						return vim.fn.executable("yaml") == 1 or vim.fn.executable("yml") == 1
-					end,
-				},
-
-				-- Python stuff
-				{
-					"python-lsp-server",
-					"basedpyright",
-					condition = function()
-						return vim.fn.executable("py") == 1
-					end,
-				},
+			local tools = {
 				"prettier",
 				"stylua",
 				"eslint_d",
 				"dotenv-linter",
+				"markdownlint",
+				"markdown-oxide",
 				"typescript-language-server",
 				"angular-language-server",
-				"angularls",
-				"lua_ls",
-				"cssls",
-				"html",
+				"lua-language-server",
+				"css-lsp",
+				"html-lsp",
 				"vtsls",
-			},
-			auto_update = false,
-			-- run_on_start = true,
-		},
+			}
+			vim.list_extend(
+				tools,
+				when(has("go"), { "gopls", "golangci-lint", "gomodifytags", "goimports", "iferr", "impl" })
+			)
+			vim.list_extend(tools, when(has("clang", "gcc", "g++", "cc"), { "clangd" }))
+			vim.list_extend(tools, when(has("docker", "podman"), { "docker-language-server" }))
+			vim.list_extend(tools, when(has("python3", "python"), { "python-lsp-server", "basedpyright" }))
+
+			return {
+				ensure_installed = tools,
+				auto_update = false,
+				-- run_on_start = true,
+			}
+		end,
 		config = function(_, opts)
 			require("mason-tool-installer").setup(opts)
 		end,

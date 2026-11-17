@@ -13,23 +13,11 @@ vim.opt.smartindent = true
 vim.opt.incsearch = true
 vim.opt.scrolloff = 8
 
----@diagnostic disable-next-line: missing-fields
-vim.opt.clipboard = {
-	name = "xsel",
-	copy = {
-		["+"] = "xsel --clipboard --input",
-		["*"] = "xsel --primary --input",
-	},
-	paste = {
-		["+"] = "xsel --clipboard --output",
-		["*"] = "xsel --primary --output",
-	},
-	cache_enabled = 0,
-}
+vim.opt.clipboard = "unnamedplus"
 
 -- Disables the inline error/warning text
 vim.diagnostic.config({
-	virutal_text = false,
+	virtual_text = false,
 })
 
 vim.o.updatetime = 250
@@ -39,6 +27,10 @@ vim.g.go_doc_popup_window = 1 -- Makes to Godoc use a popup window instead of a 
 vim.g.go_info_popup_window = 1 -- Popups for info like function signatures
 vim.g.go_highlight_auto_align = 1 -- highlight auto alignment
 vim.g.go_auto_imports = 1 -- Automatically add imports as you code
+-- gopls is already started by the native LSP client, so don't start a second one from vim-go.
+-- goimports (installed via Mason) keeps format + imports on save working without it.
+vim.g.go_gopls_enabled = 0
+vim.g.go_fmt_command = "goimports"
 
 vim.filetype.add({
 	extension = {
