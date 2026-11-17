@@ -39,3 +39,16 @@ vim.g.go_doc_popup_window = 1 -- Makes to Godoc use a popup window instead of a 
 vim.g.go_info_popup_window = 1 -- Popups for info like function signatures
 vim.g.go_highlight_auto_align = 1 -- highlight auto alignment
 vim.g.go_auto_imports = 1 -- Automatically add imports as you code
+
+vim.filetype.add({
+	extension = {
+		tmpl = "gotmpl",
+		gotmpl = "gotmpl",
+		gohtml = "gotmpl",
+	},
+	pattern = {
+		[".*/templates/.*%.tpl"] = "helm",
+		[".*/templates/.*%.ya?ml"] = "helm",
+		["helmfile.*%.ya?ml"] = "helm",
+	},
+})

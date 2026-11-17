@@ -54,6 +54,12 @@ return {
 							capabilities = capabilities,
 							settings = {
 								gopls = {
+									["build.templateExtensions"] = {
+										"gohtml",
+										"html",
+										"gotmpl",
+										"tmpl",
+									},
 									usePlaceholders = true,
 									staticcheck = true,
 									completeUnimported = true, -- autocompletion for packages not yet imported
@@ -68,7 +74,26 @@ return {
 										test = true, -- run tests via code lens
 									},
 								},
+								filetypes = {
+									"go",
+									"gomod",
+									"gowork",
+									"gotmpl",
+									"gohtmltmpl",
+									"gotexttmpl",
+								},
 							},
+						})
+					end,
+
+					-- custom go-template-lsp config
+					["go-template-lsp"] = function()
+						require("lspconfig").go_template_lsp.setup({
+							on_attach = on_attach,
+							capabilities = capabilities,
+							filetypes = { "gotmpl" },
+							root_markers = { "go.mod", ".git" },
+							mason = true,
 						})
 					end,
 
@@ -109,6 +134,29 @@ return {
 							on_attach = on_attach,
 							capabilities = capabilities,
 							settings = {},
+						})
+					end,
+					-- Custom helm-ls config
+					["helm-ls"] = function()
+						require("lspconfig").helm_ls.setup({
+							on_attach = on_attach,
+							capabilities = capabilities,
+							settings = {
+								yamlls = {
+									path = "yaml-language-server",
+								},
+							},
+						})
+					end,
+					-- Custom yamlls config
+					["yamlls"] = function()
+						require("lspconfig").yamlls.setup({
+							on_attach = on_attach,
+							capabilities = capabilities,
+							settings = {
+								yamlls = {},
+							},
+							filetypes = { "yaml", "yml" },
 						})
 					end,
 				},
@@ -179,6 +227,7 @@ return {
 				-- Python stuff
 				{
 					"python-lsp-server",
+					"basedpyright",
 					condition = function()
 						return vim.fn.executable("py") == 1
 					end,
@@ -193,6 +242,7 @@ return {
 				"lua_ls",
 				"cssls",
 				"html",
+				"vtsls",
 			},
 			auto_update = false,
 			-- run_on_start = true,
