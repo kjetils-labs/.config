@@ -5,11 +5,10 @@ vim.api.nvim_create_user_command("GoModifyTags", function(opts)
     local remove_tags = nil
     local struct_name = nil
 
-    -- Check for visual selection (if user is in visual mode)
-    local mode = vim.fn.mode()
-    if mode == "v" or mode == "V" then
-        vim.cmd('normal! "vy') -- yank visual selection into register v
-        struct_name = vim.fn.getreg("v"):gsub("\n", ""):gsub("^%s+", ""):gsub("%s+$", "")
+    -- With a visual range (:'<,'>GoModifyTags), the selected text is the struct name
+    if opts.range > 0 then
+        local region = vim.fn.getregion(vim.fn.getpos("'<"), vim.fn.getpos("'>"), { type = vim.fn.visualmode() })
+        struct_name = table.concat(region, ""):gsub("^%s+", ""):gsub("%s+$", "")
     end
 
     -- Parse args with support for aliases
@@ -76,11 +75,19 @@ vim.api.nvim_create_user_command("GoModifyTags", function(opts)
 
     table.insert(cmd_parts, "-w")
 
-    local cmd = table.concat(cmd_parts, " ")
-
-    vim.fn.jobstart(cmd, {
-        on_exit = function()
+    -- Passed as a list so paths with spaces/special characters aren't shell-split
+    local stderr = {}
+    vim.fn.jobstart(cmd_parts, {
+        stderr_buffered = true,
+        on_stderr = function(_, data)
+            stderr = data
+        end,
+        on_exit = function(_, code)
             vim.schedule(function()
+                if code ~= 0 then
+                    vim.notify("GoModifyTags failed: " .. vim.trim(table.concat(stderr, "\n")), vim.log.levels.ERROR)
+                    return
+                end
                 vim.cmd("edit") -- reload file
                 print("GoModifyTags: Updated struct " .. (struct_name or "(line)") ..
                     (tags and (" | +tags: " .. tags) or "") ..
@@ -90,6 +97,7 @@ vim.api.nvim_create_user_command("GoModifyTags", function(opts)
     })
 end, {
     nargs = "*",
+    range = true,
     ---@diagnostic disable-next-line: unused-local
     complete = function(ArgLead, CmdLine, CursorPos)
         local static_tags = { "json", "yaml", "xml", "bson", "db", "mapstructure" }
